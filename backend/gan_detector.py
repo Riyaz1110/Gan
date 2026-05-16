@@ -99,6 +99,22 @@ def generate_synthetic_dataset(n_samples: int = N_SAMPLES,
     df = pd.DataFrame(X, columns=[f"feature_{i}" for i in range(feature_dim)])
     df["label"]        = y_binary
     df["attack_type"]  = y_type
+
+    # ── Add extra columns for dashboard display ────────────────
+    countries = ["USA", "China", "Germany", "France", "Japan", "UK", "Russia", "Brazil", "India", "South Korea"]
+    protocols = ["TCP", "UDP", "ICMP"]
+    ml_models = ["K-Nearest", "Neural Network", "Support Vector", "Logistic Regression", "Random Forest"]
+    affected_systems = ["Workstation", "Web Server", "Database", "Firewall", "Application Server", "Network Router"]
+
+    df["source_ip"] = [f"{rng.randint(1,255)}.{rng.randint(1,255)}.{rng.randint(1,255)}.{rng.randint(1,255)}" for _ in range(n_samples)]
+    df["destination_ip"] = [f"{rng.randint(1,255)}.{rng.randint(1,255)}.{rng.randint(1,255)}.{rng.randint(1,255)}" for _ in range(n_samples)]
+    df["source_country"] = rng.choice(countries, n_samples)
+    df["destination_country"] = rng.choice(countries, n_samples)
+    df["protocol"] = rng.choice(protocols, n_samples)
+    df["ml_model"] = rng.choice(ml_models, n_samples)
+    df["affected_system"] = rng.choice(affected_systems, n_samples)
+    df["port_type"] = "Other"
+
     return df.sample(frac=1, random_state=SEED).reset_index(drop=True)
 
 

@@ -220,38 +220,56 @@ function App() {
 
       <div style={boxStyle}>
         <h2>Live Threat Stream Data</h2>
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Attack Type</th>
-              <th>Probability</th>
-              <th>Severity</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {threats.slice().reverse().map((item) => (
-              <tr key={item.id} style={tableRowStyle(item.is_attack)}>
-                <td style={tdStyle}>{item.date}</td>
-                <td style={tdStyle}>{item.time}</td>
-                <td style={tdStyle}>{item.attack_type}</td>
-                <td style={{ ...tdStyle, fontFamily: "monospace", color: severityColor(item.severity) }}>
-                  {Number(item.attack_probability).toFixed(4)}
-                </td>
-                <td style={tdStyle}>
-                  <span style={severityBadgeStyle(item.severity)}>
-                    {item.severity}
-                  </span>
-                </td>
-                <td style={{ ...tdStyle, fontWeight: "bold", color: item.is_attack ? "#f85149" : "#3fb950" }}>
-                  {item.status}
-                </td>
+        <div style={{ overflowX: "auto" }}>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Attack ID</th>
+                <th style={thStyle}>Source IP</th>
+                <th style={thStyle}>Destination IP</th>
+                <th style={thStyle}>Source Country</th>
+                <th style={thStyle}>Destination Country</th>
+                <th style={thStyle}>Protocol</th>
+                <th style={thStyle}>Source Port</th>
+                <th style={thStyle}>Destination Port</th>
+                <th style={thStyle}>Attack Type</th>
+                <th style={thStyle}>Payload Size</th>
+                <th style={thStyle}>Detection</th>
+                <th style={thStyle}>Confidence</th>
+                <th style={thStyle}>ML Model</th>
+                <th style={thStyle}>Affected System</th>
+                <th style={thStyle}>Port Type</th>
+                <th style={thStyle}>Timestamp</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {threats.slice().reverse().map((item) => (
+                <tr key={item.id} style={tableRowStyle(item.is_attack)}>
+                  <td style={tdStyle}>{item.id}</td>
+                  <td style={tdStyle}>{item.source_ip || "--"}</td>
+                  <td style={tdStyle}>{item.destination_ip || "--"}</td>
+                  <td style={tdStyle}>{item.source_country || "--"}</td>
+                  <td style={tdStyle}>{item.destination_country || "--"}</td>
+                  <td style={tdStyle}>{item.protocol || "--"}</td>
+                  <td style={tdStyle}>{item.source_port || "--"}</td>
+                  <td style={tdStyle}>{item.destination_port || "--"}</td>
+                  <td style={tdStyle}>{item.attack_type || "--"}</td>
+                  <td style={tdStyle}>{item.payload_size || "--"}</td>
+                  <td style={{ ...tdStyle, fontWeight: "bold", color: item.is_attack ? "#f85149" : "#3fb950" }}>
+                    {item.is_attack ? "Detected" : "Not Detected"}
+                  </td>
+                  <td style={{ ...tdStyle, fontFamily: "monospace", color: severityColor(item.severity) }}>
+                    {Number(item.attack_probability).toFixed(6)}
+                  </td>
+                  <td style={tdStyle}>{item.ml_model || "--"}</td>
+                  <td style={tdStyle}>{item.affected_system || "--"}</td>
+                  <td style={tdStyle}>{item.port_type || "--"}</td>
+                  <td style={tdStyle}>{item.datetime}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -332,7 +350,16 @@ const tableStyle = {
 
 const tdStyle = {
   padding: "10px 12px",
-  borderBottom: "1px solid #21262d"
+  borderBottom: "1px solid #21262d",
+  whiteSpace: "nowrap"
+};
+
+const thStyle = {
+  padding: "12px",
+  borderBottom: "2px solid #30363d",
+  whiteSpace: "nowrap",
+  color: "#8b949e",
+  fontWeight: "600"
 };
 
 const tableRowStyle = (isAttack) => ({
