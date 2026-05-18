@@ -122,12 +122,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 "protocol": str(row.get("Protocol", "Unknown")),
                 "source_port": int(float(row.get("Source Port", 0))) if str(row.get("Source Port", "")).replace(".","").isdigit() else 0,
                 "destination_port": int(float(row.get("Destination Port", 0))) if str(row.get("Destination Port", "")).replace(".","").isdigit() else 0,
-                "attack_type": str(row.get("Attack Type", "Unknown")),
                 "payload_size": int(float(row.get("Payload Size (bytes)", 0))) if str(row.get("Payload Size (bytes)", "")).replace(".","").isdigit() else 0,
                 "is_attack": is_attack,
                 "attack_prob": attack_prob,
                 "severity": severity,
-                "ml_model": str(row.get("ML Model", "Unknown")),
                 "affected_system": str(row.get("Affected System", "Unknown")),
                 "port_type": str(row.get("Port Type", "Unknown"))
             }

@@ -150,11 +150,6 @@ function App() {
         </div>
 
         <div style={cardStyle}>
-          <h3>Attack Type</h3>
-          <h2>{latest?.attack_type || "Waiting"}</h2>
-        </div>
-
-        <div style={{ ...cardStyle, borderColor: latest?.severity ? severityColor(latest.severity) : "#30363d", boxShadow: latest?.severity ? `0 0 12px ${severityColor(latest.severity)}55` : "none" }}>
           <h3>Severity</h3>
           <h2 style={{ color: latest?.severity ? severityColor(latest.severity) : "#3fb950", textShadow: latest?.severity ? `0 0 8px ${severityColor(latest.severity)}` : "none" }}>
             {latest?.severity || "LOW"}
@@ -232,11 +227,10 @@ function App() {
                 <th style={thStyle}>Protocol</th>
                 <th style={thStyle}>Source Port</th>
                 <th style={thStyle}>Destination Port</th>
-                <th style={thStyle}>Attack Type</th>
                 <th style={thStyle}>Payload Size</th>
                 <th style={thStyle}>Detection</th>
                 <th style={thStyle}>Confidence</th>
-                <th style={thStyle}>ML Model</th>
+                <th style={thStyle}>Severity</th>
                 <th style={thStyle}>Affected System</th>
                 <th style={thStyle}>Port Type</th>
                 <th style={thStyle}>Timestamp</th>
@@ -253,7 +247,6 @@ function App() {
                   <td style={tdStyle}>{item.protocol || "--"}</td>
                   <td style={tdStyle}>{item.source_port || "--"}</td>
                   <td style={tdStyle}>{item.destination_port || "--"}</td>
-                  <td style={tdStyle}>{item.attack_type || "--"}</td>
                   <td style={tdStyle}>{item.payload_size || "--"}</td>
                   <td style={{ ...tdStyle, fontWeight: "bold", color: item.is_attack ? "#f85149" : "#3fb950" }}>
                     {item.is_attack ? "Detected" : "Not Detected"}
@@ -261,7 +254,9 @@ function App() {
                   <td style={{ ...tdStyle, fontFamily: "monospace", color: severityColor(item.severity) }}>
                     {Number(item.attack_probability).toFixed(6)}
                   </td>
-                  <td style={tdStyle}>{item.ml_model || "--"}</td>
+                  <td style={tdStyle}>
+                    <span style={severityBadgeStyle(item.severity)}>{item.severity}</span>
+                  </td>
                   <td style={tdStyle}>{item.affected_system || "--"}</td>
                   <td style={tdStyle}>{item.port_type || "--"}</td>
                   <td style={tdStyle}>{item.datetime}</td>
@@ -321,7 +316,7 @@ const dotStyle = (isConnected, isTrained) => {
 
 const cardContainer = {
   display: "grid",
-  gridTemplateColumns: "repeat(5, 1fr)",
+  gridTemplateColumns: "repeat(4, 1fr)",
   gap: "15px",
   marginBottom: "25px"
 };
